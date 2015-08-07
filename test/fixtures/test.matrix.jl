@@ -4,7 +4,7 @@ using JSON
 p = 0.5
 d = Geometric( p )
 
-x = linspace( 1, 0, 25 )
+x = linspace( -0.5, 0.5, 25 )
 
 dmgf(t) = mgf(d, t )
 y = map( dmgf, x )

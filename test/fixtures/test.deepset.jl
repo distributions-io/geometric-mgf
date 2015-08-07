@@ -1,10 +1,10 @@
 using Distributions
 using JSON
 
-p = 0.5
+p = 0.2
 d = Geometric( p )
 
-x = linspace( .5, -100, 100 )
+x = linspace( -20, 0.2, 400 )
 
 dmgf(t) = mgf(d, t )
 y = map( dmgf, x )
