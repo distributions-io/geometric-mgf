@@ -59,4 +59,9 @@ describe( 'partial mgf', function tests() {
 		assert.isTrue( isnan( mgf( NaN ) ) );
 	});
 
+	it( 'should return `NaN` if provided an input `>= -ln( 1 - p )`', function test() {
+		var mgf = partial(  p );
+		assert.isTrue( isnan( mgf( -Math.log( 1 - p ) + 0.1, p ) ) );
+	});
+
 });

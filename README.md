@@ -2,17 +2,17 @@ Moment-Generating Function
 ===
 [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][codecov-image]][codecov-url] [![Dependencies][dependencies-image]][dependencies-url]
 
-> [geometric](https://en.wikipedia.org/wiki/geometric_distribution) distribution moment-generating function (MGF).
+> [Geometric](https://en.wikipedia.org/wiki/geometric_distribution) distribution moment-generating function (MGF).
 
 The [moment-generating function](https://en.wikipedia.org/wiki/Moment-generating_function) for a [geometric](https://en.wikipedia.org/wiki/geometric_distribution) random variable is
 
 <div class="equation" align="center" data-raw-text="
-    M_X(t) := \mathbb{E}\!\left[e^{tX}\right]" data-equation="eq:mgf_function">
-	<img src="" alt="Moment-generating function (MGF) for a geometric distribution.">
+    M_X(t) := \mathbb{E}\!\left[e^{tX}\right] = \frac{pe^t}{1-(1-p) e^t} \text{ for } t<-\ln(1-p)" data-equation="eq:mgf_function">
+	<img src="https://cdn.rawgit.com/distributions-io/geometric-mgf/51498302bd1f88676d97395a52978e3524918b9d/docs/img/eqn.svg" alt="Moment-generating function (MGF) for a geometric distribution.">
 	<br>
 </div>
 
-where `p` is the success probability.
+where `0 < p <= 1` is the success probability.
 
 ## Installation
 
@@ -40,15 +40,15 @@ var matrix = require( 'dstructs-matrix' ),
 	t,
 	i;
 
-out = mgf( 1 );
-// returns
+out = mgf( 0.5 );
+// returns ~4.693
 
 out = mgf( -1 );
-// returns 0
+// returns ~0.225
 
-t = [ 0, 0.5, 1, 1.5, 2, 2.5 ];
+t = [ 0, 0.2, 0.4, 0.6, 0.8, 1 ];
 out = mgf( t );
-// returns [...]
+// returns [ 1, ~1.569, ~2.936, ~10.243, NaN, NaN ]
 
 t = new Int8Array( t );
 out = mgf( t );
@@ -56,20 +56,20 @@ out = mgf( t );
 
 t = new Float32Array( 6 );
 for ( i = 0; i < 6; i++ ) {
-	t[ i ] = i * 0.5;
+	t[ i ] = i * 0.2;
 }
 mat = matrix( t, [3,2], 'float32' );
 /*
-	[ 0  0.5
-	  1  1.5
-	  2  2.5 ]
+	[ 0    0.2
+	  0.4  0.6
+	  0.8  1 ]
 */
 
 out = mgf( mat );
 /*
-	[
-
-	   ]
+	[ 1       ~1.569
+      ~2.936  ~10.243
+      NaN     NaN     ]
 */
 ```
 
@@ -85,12 +85,12 @@ The function accepts the following `options`:
 A [geometric](https://en.wikipedia.org/wiki/geometric_distribution) distribution is a function of 1 parameter(s): `p`(success probability). By default, `p` is equal to `0.5`. To adjust either parameter, set the corresponding option.
 
 ``` javascript
-var t = [ 0, 0.5, 1, 1.5, 2, 2.5 ];
+var t = [ 0, 0.2, 0.4, 0.6, 0.8, 1 ];
 
 var out = mgf( t, {
-	'p': 5
+	'p': 0.9
 });
-// returns [...]
+// returns [ 1, ~1.252, ~1.578, ~2.005, ~2.576, ~3.360 ]
 ```
 
 For non-numeric `arrays`, provide an accessor `function` for accessing `array` values.
@@ -98,11 +98,11 @@ For non-numeric `arrays`, provide an accessor `function` for accessing `array` v
 ``` javascript
 var data = [
 	[0,0],
-	[1,0.5],
-	[2,1],
-	[3,1.5],
-	[4,2],
-	[5,2.5]
+	[1,0.2],
+	[2,0.4],
+	[3,0.6],
+	[4,0.8],
+	[5,1]
 ];
 
 function getValue( d, i ) {
@@ -112,7 +112,7 @@ function getValue( d, i ) {
 var out = mgf( data, {
 	'accessor': getValue
 });
-// returns [...]
+// returns [ 1, ~1.569, ~2.936, ~10.243, NaN, NaN ]
 ```
 
 
@@ -134,12 +134,12 @@ var out = mgf( data, {
 });
 /*
 	[
-		{'x':[0,]},
-		{'x':[1,]},
-		{'x':[2,]},
-		{'x':[3,]},
-		{'x':[4,]},
-		{'x':[5,]}
+		{'x':[0,1]},
+		{'x':[1,~1.569]},
+		{'x':[2,~2.936]},
+		{'x':[3,~10.243]},
+		{'x':[4,NaN]},
+		{'x':[5,NaN]}
 	]
 */
 
@@ -152,18 +152,18 @@ By default, when provided a [`typed array`](https://developer.mozilla.org/en-US/
 ``` javascript
 var t, out;
 
-t = new Int8Array( [0,1,2,3,4] );
+t = new Int8Array( [0,0.2,0.4,0.6] );
 
 out = mgf( t, {
 	'dtype': 'int32'
 });
-// returns Int32Array( [...] )
+// returns Int32Array( [1,1,2,10] )
 
 // Works for plain arrays, as well...
-out = mgf( [0,0.5,1,1.5,2], {
+out = mgf( [0,0.2,0.4,0.6], {
 	'dtype': 'uint8'
 });
-// returns Uint8Array( [...] )
+// returns Uint8Array( [1,1,2,10] )
 ```
 
 By default, the function returns a new data structure. To mutate the input data structure (e.g., when input values can be discarded or when optimizing memory usage), set the `copy` option to `false`.
@@ -175,34 +175,34 @@ var bool,
 	t,
 	i;
 
-t = [ 0, 0.5, 1, 1.5, 2 ];
+t = [ 0, 0.2, 0.4, 0.6, 0.8, 1 ];
 
 out = mgf( t, {
 	'copy': false
 });
-// returns [...]
+// returns [ 1, ~1.569, ~2.936, ~10.243, NaN, NaN ]
 
 bool = ( t === out );
 // returns true
 
 t = new Float32Array( 6 );
 for ( i = 0; i < 6; i++ ) {
-	t[ i ] = i * 0.5;
+	t[ i ] = i * 0.2;
 }
 mat = matrix( t, [3,2], 'float32' );
 /*
-	[ 0  0.5
-	  1  1.5
-	  2  2.5 ]
+	[ 0    0.2
+	  0.4  0.6
+	  0.8  1 ]
 */
 
 out = mgf( mat, {
 	'copy': false
 });
 /*
-	[
-
-	   ]
+	[ 1       ~1.569
+      ~2.936  ~10.243
+      NaN     NaN     ]
 */
 
 bool = ( mat === out );

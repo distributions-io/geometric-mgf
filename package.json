@@ -1,7 +1,7 @@
 {
   "name": "distributions-geometric-mgf",
   "version": "0.0.0",
-  "description": "geometric distribution moment-generating function (MGF)",
+  "description": "Geometric distribution moment-generating function (MGF)",
   "author": {
     "name": "Philipp Burckhardt",
     "email": "pburckhardt@outlook.com"
