@@ -20,11 +20,12 @@
   "main": "./lib",
   "repository": {
     "type": "git",
-    "url": "git://github.com/compute-io/geometric-mgf.git"
+    "url": "git://github.com/distributions-io/geometric-mgf.git"
   },
   "keywords": [
     "distributions.io",
     "distributions",
+    "distribution",
     "probability",
     "statistics",
     "stats",
@@ -33,7 +34,7 @@
     "moments"
   ],
   "bugs": {
-    "url": "https://github.com/compute-io/geometric-mgf/issues"
+    "url": "https://github.com/distributions-io/geometric-mgf/issues"
   },
   "dependencies": {
     "compute-array-constructors": "^1.0.0",

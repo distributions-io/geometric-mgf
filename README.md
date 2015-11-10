@@ -82,7 +82,7 @@ The function accepts the following `options`:
 *	__path__: [deepget](https://github.com/kgryte/utils-deep-get)/[deepset](https://github.com/kgryte/utils-deep-set) key path.
 *	__sep__: [deepget](https://github.com/kgryte/utils-deep-get)/[deepset](https://github.com/kgryte/utils-deep-set) key path separator. Default: `'.'`.
 
-A [geometric](https://en.wikipedia.org/wiki/geometric_distribution) distribution is a function of 1 parameter(s): `p`(success probability). By default, `p` is equal to `0.5`. To adjust either parameter, set the corresponding option.
+A [geometric](https://en.wikipedia.org/wiki/geometric_distribution) distribution is a function of one parameter: `p`(success probability). By default, `p` is equal to `0.5`. To adjust it, set the corresponding option.
 
 ``` javascript
 var t = [ 0, 0.2, 0.4, 0.6, 0.8, 1 ];
